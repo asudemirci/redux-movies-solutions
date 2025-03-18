@@ -1,11 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFavorite } from '../store/actions/favoritesActions';
 
 const FavoriteMovieList = (props) => {
-  const favorites = [];
+  const dispatch = useDispatch();
+  const favorites = useSelector((store) => store.favorites.favorites);
+  const displayFavorites = useSelector(
+    (store) => store.favorites.displayFavorites
+  );
 
   return (
-    <div className="flex-1 sm:max-w-[250px] p-5 pr-5 bg-white shadow rounded-md">
+    <div 
+    data-testid="favorite-movie-list"
+    className={`flex-1 sm:max-w-[250px] p-5 pr-5 bg-white shadow rounded-md ${
+      displayFavorites ? '' : 'hidden'
+    }`}>
       <h5 className="font-bold">Favori Filmler</h5>
       {
         <div className="pt-3 text-sm">
