@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addMovie } from '../store/actions/movieActions';
+
 
 const AddMovieForm = (props) => {
   const { push } = useHistory();
+  const dispatch = useDispatch();
+  const movies = useSelector((store) => store.movies.movies);
+  const newId = movies.length ? Math.max(...movies.map((m) => m.id)) + 1 : 1;
 
   const [movie, setMovie] = useState({
+    id: newId,
     title: '',
     director: '',
     genre: '',
@@ -19,7 +26,11 @@ const AddMovieForm = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addMovie(movie));
+    push('/movies');
+  };
 
   const { title, director, genre, metascore, description } = movie;
   return (
@@ -97,6 +108,7 @@ const AddMovieForm = (props) => {
           <button
             type="submit"
             className="myButton bg-green-700 hover:bg-green-600"
+            onClick={handleSubmit}
           >
             Ekle
           </button>
